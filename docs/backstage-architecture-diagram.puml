@@ -1,0 +1,132 @@
+@startuml Backstage Architecture (Detailed & Improved)
+!theme plain
+skinparam backgroundColor white
+skinparam componentStyle rectangle
+skinparam shadowing false
+skinparam linetype poly ' <--- CAMBIO CLAVE: Líneas poligonales (poly) son más limpias que ortogonales (ortho)
+skinparam package {
+    BorderColor #888
+    BackgroundColor #FAFAFA
+}
+
+title Backstage Platform Architecture (Detailed View)
+
+actor "Developer" as dev
+
+' Contenedor del Sistema Backstage
+package "Backstage Platform" {
+
+    package "Web Browser" {
+        component "Backstage Frontend" as frontend {
+            component "App Shell" as shell
+            component "Catalog UI" as catalogUI
+            component "Scaffolder UI" as scaffolderUI
+            component "TechDocs UI" as techdocsUI
+            component "Plugin UIs" as pluginUIs
+        }
+    }
+
+    package "Backstage Backend" {
+        component "Core System" as core {
+            component "Plugin Manager" as pluginMgr
+            component "API Gateway" as apiGateway
+            component "Auth Service" as authSvc
+        }
+        component "Catalog Backend" as catalogBE
+        component "Scaffolder Backend" as scaffolderBE
+        component "TechDocs Backend" as techdocsBE
+        ' Agrupación de todos los demás plugins
+        component "Backend Plugins" as backendPlugins
+    }
+
+    ' La BD es una unidad. Los componentes leen/escriben en ella.
+    database "Database\n(PostgreSQL)" as db
+}
+
+' Sistemas Externos
+package "External Systems" {
+
+    ' Proveedores de autenticación
+    component "Auth Providers" as authProviders {
+        component "OAuth2" as oauth2
+        component "SAML" as saml
+        component "LDAP" as ldap
+    }
+
+    ' Proveedores de Git (contienen los archivos de configuración)
+    component "Git Providers\n(GitHub, GitLab, etc)" as git {
+        file "catalog-info.yaml" as catalogInfo
+        file "mkdocs.yml" as mkdocs
+        file "Templates" as templates
+    }
+
+    ' Herramientas que Backstage consume
+    component "CI/CD Systems" as cicd {
+        component "Jenkins" as jenkins
+        component "GitHub Actions" as ghActions
+    }
+    
+    component "Monitoring Tools" as monitoring {
+        component "Grafana" as grafana
+        component "Datadog" as datadog
+    }
+    
+    component "Cloud Providers" as cloud {
+        component "AWS" as aws
+        component "GCP" as gcp
+    }
+}
+
+' --- Relaciones y Flujos ---
+
+' Flujo de Usuario
+dev --> frontend : "HTTPS Access"
+frontend <--> core : "REST/GraphQL API"
+
+' Flujos internos del Frontend
+' (Estos flujos pasan a través del Core/API Gateway)
+catalogUI --> catalogBE
+scaffolderUI --> scaffolderBE
+techdocsUI --> techdocsBE
+pluginUIs --> backendPlugins
+
+' Flujos internos del Backend
+core --> db : "Config, User Data"
+core -down-> pluginMgr
+core -down-> authSvc
+authSvc --> authProviders : "Auth Flow"
+
+' Flujo de Catálogo (Ingesta)
+catalogBE --> db : "Write Metadata"
+catalogBE <-down- git : "Scan Repos"
+catalogBE <- catInfo : "Read Metadata"
+
+' Flujo de Scaffolding (Creación)
+scaffolderBE --> git : "Create Repo"
+scaffolderBE <- templates : "Use Template"
+scaffolderBE --> catalogBE : "Register Component"
+
+' Flujo de TechDocs
+techdocsBE <-- mkdocs : "Read Docs Source"
+techdocsBE --> db : "Cache/Store Docs"
+
+' Flujo de Plugins (Consumo de datos)
+backendPlugins --> cicd : "Get CI/CD Status"
+backendPlugins --> monitoring : "Get Metrics"
+backendPlugins --> cloud : "Get Cloud Resources"
+
+note right of catalogBE
+  <b>Autodiscovery:</b>
+  Escanea repos en Git
+  para encontrar y leer
+  archivos 'catalog-info.yaml'.
+end note
+
+note right of scaffolderBE
+  <b>Scaffolding:</b>
+  Usa 'Templates' para crear
+  un nuevo repositorio en Git
+  y lo registra en el Catálogo.
+end note
+
+@enduml

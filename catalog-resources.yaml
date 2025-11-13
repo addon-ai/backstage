@@ -1,0 +1,223 @@
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: jira-instance
+  title: Jira Production
+  description: Sistema de gestión de proyectos y seguimiento de issues
+  tags:
+    - commercial
+    - project-management
+spec:
+  type: service
+  owner: platform-team
+  system: project-management
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: confluence
+  title: Confluence Wiki
+  description: Plataforma de documentación colaborativa
+  tags:
+    - commercial
+    - documentation
+spec:
+  type: service
+  owner: platform-team
+  system: documentation
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: sonarqube
+  title: SonarQube
+  description: Análisis de calidad de código
+  tags:
+    - commercial
+    - code-quality
+spec:
+  type: service
+  owner: platform-team
+  system: ci-cd
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: jenkins
+  title: Jenkins CI/CD
+  description: Servidor de integración continua
+  tags:
+    - open-source
+    - ci-cd
+spec:
+  type: service
+  owner: platform-team
+  system: ci-cd
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: kubernetes-cluster
+  title: Kubernetes Production
+  description: Cluster de orquestación de contenedores
+  tags:
+    - open-source
+    - infrastructure
+spec:
+  type: cluster
+  owner: platform-team
+  system: infrastructure
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: aws-cloud
+  title: AWS Cloud Platform
+  description: Servicios de nube de Amazon Web Services
+  tags:
+    - commercial
+    - cloud
+spec:
+  type: cloud-provider
+  owner: platform-team
+  system: infrastructure
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: docker-registry
+  title: Docker Registry
+  description: Registro de imágenes de contenedores
+  tags:
+    - commercial
+    - containers
+spec:
+  type: registry
+  owner: platform-team
+  system: infrastructure
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: bitbucket
+  title: Bitbucket
+  description: Repositorio de código fuente
+  tags:
+    - commercial
+    - source-control
+spec:
+  type: service
+  owner: platform-team
+  system: development
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: nexus-repository
+  title: Nexus Repository
+  description: Gestor de artefactos y dependencias
+  tags:
+    - commercial
+    - artifacts
+spec:
+  type: registry
+  owner: platform-team
+  system: ci-cd
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: dynatrace
+  title: Dynatrace
+  description: Monitoreo de aplicaciones y infraestructura
+  tags:
+    - commercial
+    - monitoring
+spec:
+  type: service
+  owner: platform-team
+  system: observability
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: elastic-stack
+  title: Elastic Stack
+  description: Búsqueda, análisis y visualización de datos
+  tags:
+    - commercial
+    - logging
+spec:
+  type: service
+  owner: platform-team
+  system: observability
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: azure-cloud
+  title: Microsoft Azure
+  description: Plataforma de servicios en la nube
+  tags:
+    - commercial
+    - cloud
+spec:
+  type: cloud-provider
+  owner: platform-team
+  system: infrastructure
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: gcp-cloud
+  title: Google Cloud Platform
+  description: Servicios de nube de Google
+  tags:
+    - commercial
+    - cloud
+spec:
+  type: cloud-provider
+  owner: platform-team
+  system: infrastructure
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: helm
+  title: Helm
+  description: Gestor de paquetes para Kubernetes
+  tags:
+    - open-source
+    - package-manager
+spec:
+  type: tool
+  owner: platform-team
+  system: infrastructure
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: maven
+  title: Apache Maven
+  description: Herramienta de gestión de proyectos Java
+  tags:
+    - open-source
+    - build-tool
+spec:
+  type: tool
+  owner: platform-team
+  system: development
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: npm-registry
+  title: npm Registry
+  description: Registro de paquetes Node.js
+  tags:
+    - open-source
+    - package-manager
+spec:
+  type: registry
+  owner: platform-team
+  system: development

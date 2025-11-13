@@ -1,0 +1,147 @@
+BACKSTAGE PLATFORM ARCHITECTURE DIAGRAM (Plain Text)
+========================================================
+
+┌─────────────────┐
+│   Developer     │
+│   (End User)    │
+└─────────┬───────┘
+          │ HTTPS Access
+          ▼
+┌─────────────────────────────────────────────────────────────────────────┐
+│                           Web Browser                                   │
+│  ┌─────────────────────────────────────────────────────────────────┐   │
+│  │                  Backstage Frontend (React SPA)                 │   │
+│  │  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌────────┐ │   │
+│  │  │App Shell │ │Catalog UI│ │Scaffolder│ │TechDocs │ │Plugin  │ │   │
+│  │  │          │ │          │ │    UI    │ │   UI    │ │   UIs  │ │   │
+│  │  └──────────┘ └──────────┘ └──────────┘ └──────────┘ └────────┘ │   │
+│  └─────────────────────────────────────────────────────────────────┘   │
+└─────────────────────┬───────────────────────────────────────────────────┘
+                      │ REST/GraphQL API
+                      ▼
+┌─────────────────────────────────────────────────────────────────────────┐
+│                        Backstage Backend                                │
+│  ┌─────────────────────────────────────────────────────────────────┐   │
+│  │                        Core System                              │   │
+│  │  ┌──────────────┐ ┌──────────────┐ ┌──────────────┐           │   │
+│  │  │Plugin Manager│ │ API Gateway  │ │ Auth Service │           │   │
+│  │  └──────────────┘ └──────────────┘ └──────────────┘           │   │
+│  └─────────────────────────────────────────────────────────────────┘   │
+│                                                                         │
+│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────────────────────┐   │
+│  │Catalog   │ │Scaffolder│ │TechDocs  │ │    Backend Plugins       │   │
+│  │Backend   │ │ Backend  │ │ Backend  │ │  (CI/CD, Monitoring,     │   │
+│  │          │ │          │ │          │ │   Cloud, Custom)         │   │
+│  └──────────┘ └──────────┘ └──────────┘ └──────────────────────────┘   │
+└─────────┬───────────────────────────┬─────────────────────────┬─────────┘
+          │                           │                         │
+          │ SQL Queries               │ HTTP/API Calls          │ Auth Flows
+          ▼                           ▼                         ▼
+┌─────────────────┐         ┌─────────────────────────────────────────────┐
+│    Database     │         │              External Systems               │
+│                 │         │                                             │
+│ ┌─────────────┐ │         │ ┌─────────────────┐ ┌─────────────────────┐ │
+│ │  Catalog    │ │         │ │  Git Providers  │ │    CI/CD Systems    │ │
+│ │ Metadata    │ │         │ │                 │ │                     │ │
+│ │             │ │         │ │ • GitHub        │ │ • Jenkins           │ │
+│ │ ┌─────────┐ │ │         │ │ • GitLab        │ │ • GitHub Actions    │ │
+│ │ │Services │ │ │         │ │ • Bitbucket     │ │ • GitLab CI         │ │
+│ │ │APIs     │ │ │         │ └─────────────────┘ └─────────────────────┘ │
+│ │ │Resources│ │ │         │                                             │
+│ │ │Users    │ │ │         │ ┌─────────────────┐ ┌─────────────────────┐ │
+│ │ └─────────┘ │ │         │ │ Monitoring Tools│ │   Cloud Providers   │ │
+│ │             │ │         │ │                 │ │                     │ │
+│ │ ┌─────────┐ │ │         │ │ • Grafana       │ │ • AWS               │ │
+│ │ │User Data│ │ │         │ │ • Datadog       │ │ • GCP               │ │
+│ │ │Config   │ │ │         │ │ • Prometheus    │ │ • Azure             │ │
+│ │ └─────────┘ │ │         │ └─────────────────┘ └─────────────────────┘ │
+│ │             │ │         │                                             │
+│ PostgreSQL/   │ │         │ ┌─────────────────────────────────────────┐ │
+│ SQLite        │ │         │ │           Auth Providers                │ │
+└─────────────────┘         │ │                                         │ │
+                            │ │ • OAuth2 (GitHub, Google, Microsoft)   │ │
+                            │ │ • SAML 2.0                              │ │
+                            │ │ • LDAP/Active Directory                 │ │
+                            │ └─────────────────────────────────────────┘ │
+                            └─────────────────────────────────────────────┘
+                                              ▲
+                                              │ Repository Scanning
+                                              │ Template Processing
+                                              │ Documentation Build
+                            ┌─────────────────┴─────────────────┐
+                            │         Code Repositories         │
+                            │                                   │
+                            │  ┌─────────────────────────────┐  │
+                            │  │     catalog-info.yaml       │  │
+                            │  │   (Service Metadata)        │  │
+                            │  └─────────────────────────────┘  │
+                            │                                   │
+                            │  ┌─────────────────────────────┐  │
+                            │  │       mkdocs.yml            │  │
+                            │  │   (Documentation Config)    │  │
+                            │  └─────────────────────────────┘  │
+                            │                                   │
+                            │  ┌─────────────────────────────┐  │
+                            │  │      Template Files         │  │
+                            │  │   (Scaffolding Templates)   │  │
+                            │  └─────────────────────────────┘  │
+                            │                                   │
+                            │  ┌─────────────────────────────┐  │
+                            │  │      Source Code            │  │
+                            │  │   (Application Logic)       │  │
+                            │  └─────────────────────────────┘  │
+                            └───────────────────────────────────┘
+
+KEY INTERACTION FLOWS:
+═════════════════════
+
+1. User Access Flow:
+   Developer → Browser → Frontend → Backend → Database/External Systems
+
+2. Service Discovery Flow:
+   Backend → Git Repositories → catalog-info.yaml → Catalog Backend → Database
+
+3. Scaffolding Flow:
+   Frontend → Scaffolder Backend → Templates → Git Repository Creation → 
+   Automatic Catalog Registration
+
+4. Documentation Flow:
+   TechDocs Backend → mkdocs.yml → Documentation Build → Frontend Display
+
+5. External Integration Flow:
+   Backend Plugins → External APIs → Data Aggregation → Frontend Display
+
+6. Authentication Flow:
+   Frontend → Auth Service → External Auth Providers → Token Validation → 
+   Authorized Access
+
+COMPONENT RESPONSIBILITIES:
+═══════════════════════════
+
+Frontend Components:
+- App Shell: Navigation, routing, plugin orchestration
+- Catalog UI: Service discovery, entity relationships
+- Scaffolder UI: Project creation, template selection
+- TechDocs UI: Documentation browsing, search
+- Plugin UIs: Custom functionality, external tool integration
+
+Backend Components:
+- Core System: Plugin management, API routing, authentication
+- Catalog Backend: Metadata management, entity relationships
+- Scaffolder Backend: Template processing, repository creation
+- TechDocs Backend: Documentation building, serving
+- Backend Plugins: External system integration, data aggregation
+
+Data Layer:
+- Database: Persistent storage for catalog, user data, configuration
+- External Systems: Source of truth for operational data
+- Code Repositories: Source of metadata, templates, documentation
+
+SCALABILITY CONSIDERATIONS:
+═══════════════════════════
+
+- Horizontal scaling: Multiple backend instances with load balancer
+- Database optimization: Read replicas, connection pooling
+- Caching: Redis for external API responses, static asset CDN
+- Plugin isolation: Separate processes for resource-intensive plugins
+- Microservices: Domain-specific backend services for large deployments
