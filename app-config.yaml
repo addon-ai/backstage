@@ -21,6 +21,9 @@ backend:
       user: ${POSTGRES_USER}
       password: ${POSTGRES_PASSWORD}
       database: ${POSTGRES_DB}
+  reading:
+    allow:
+      - host: 'raw.githubusercontent.com'
 
 auth:
   providers:
@@ -29,6 +32,9 @@ auth:
       development:
         clientId: ${AUTH_GITHUB_CLIENT_ID}
         clientSecret: ${AUTH_GITHUB_CLIENT_SECRET}
+        signIn:
+          resolvers:
+            - resolver: usernameMatchingUserEntityName
 
 integrations:
   github:
@@ -70,6 +76,8 @@ scaffolder:
 
 catalog:
   orphanStrategy: delete
+  rules:
+    - allow: [Component, System, API, Resource, Location, Template, User, Group, Domain]
   locations:
     - type: file
       target: ../../examples/org.yaml
