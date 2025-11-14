@@ -49,30 +49,11 @@ techdocs:
     type: 'local'
 
 scaffolder:
-  # see https://backstage.io/docs/features/software-templates/configuration for software template options
-
-#catalog:
-#  import:
-#    entityFilename: catalog-info.yaml
-#    pullRequestBranchName: backstage-integration
-#  rules:
-#    - allow: [Component, System, API, Resource, Location]
-#  locations:
-    # Local example data
-#    - type: file
-#      target: ../../examples/entities.yaml
-
-    # Local example template
- #   - type: file
- #     target: ../../examples/template/template.yaml
- #     rules:
- #       - allow: [Template]
-
-    # Local example organizational data
-#    - type: file
-#      target: ../../examples/org.yaml
-#      rules:
-#        - allow: [User, Group]
+  taskTimeout: 900000
+  actions:
+    - catalog:publish:default
+    - github:publish:repo
+    - github:create:pull-request
 
 catalog:
   orphanStrategy: delete
@@ -125,6 +106,7 @@ permission:
 
 notifications:
   processors:
+    signals: {}
     email:
       transportConfig:
         transport: smtp

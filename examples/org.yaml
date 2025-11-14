@@ -22,6 +22,17 @@ spec:
 apiVersion: backstage.io/v1alpha1
 kind: User
 metadata:
+  name: Jiliar
+spec:
+  profile:
+    displayName: Jiliar Silgado Cardona
+    email: jiliar.silgado@gmail.com
+  memberOf: [guests, platform-team]
+---
+# https://backstage.io/docs/features/software-catalog/descriptor-format#kind-user
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
   name: jhompo
 spec:
   memberOf: [guests, platform-team]
