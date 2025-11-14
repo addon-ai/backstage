@@ -58,6 +58,30 @@ spec:
         repoUrl: ${{ parameters.repoUrl }}
         defaultBranch: 'main'
 
+    - id: create-develop
+      name: Create Develop Branch
+      action: github:repo:create-branch
+      input:
+        repoUrl: ${{ parameters.repoUrl }}
+        branchName: develop
+        sourceBranchName: main
+
+    - id: create-test
+      name: Create Test Branch
+      action: github:repo:create-branch
+      input:
+        repoUrl: ${{ parameters.repoUrl }}
+        branchName: test
+        sourceBranchName: main
+
+    - id: create-staging
+      name: Create Staging Branch
+      action: github:repo:create-branch
+      input:
+        repoUrl: ${{ parameters.repoUrl }}
+        branchName: staging
+        sourceBranchName: main
+
     # The final step is to register our new component in the catalog.
     - id: register
       name: Register

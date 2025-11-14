@@ -83,6 +83,14 @@ catalog:
       target: ../../examples/org.yaml
       rules:
         - allow: [User, Group]
+    - type: file
+      target: ../../examples/template/template.yaml
+      rules:
+       - allow: [Template]
+    - type: url
+      target: https://raw.githubusercontent.com/addon-ai/backstage-templates/refs/heads/main/back-ms-movies-webflux/template.yml
+      rules:
+       - allow: [Template]
   providers:
     github:
       addonAI:
@@ -114,3 +122,16 @@ kubernetes:
 permission:
   # setting this to `false` will disable permissions
   enabled: true
+
+notifications:
+  processors:
+    email:
+      transportConfig:
+        transport: smtp
+        hostname: ${EMAIL_SMTP_HOST}
+        port: ${EMAIL_SMTP_PORT}
+        secure: ${EMAIL_SMTP_SECURE}
+        username: ${EMAIL_USERNAME}
+        password: ${EMAIL_PASSWORD}
+      sender: ${EMAIL_SENDER}
+      replyTo: ${EMAIL_REPLY_TO}
